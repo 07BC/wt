@@ -2,6 +2,40 @@
 
 A Swift command-line tool that simplifies git worktree management.
 
+## What Are Git Worktrees?
+
+Git worktrees will change your life. Maybe even spacetime itself. They are genuinely one of Git's best-kept secrets... and also a complete pain in the arse to use.
+
+**The Problem**: You're halfway through a feature branch, your code is a beautiful disaster of half-finished experiments, and suddenly someone needs an urgent hotfix on `main`. What do you do?
+
+- `git stash`? Good luck remembering what you stashed three weeks ago.
+- Commit your work-in-progress? Enjoy that `"WIP: stuff and things"` polluting your history.
+- Clone the repo again? Now you have two repos and existential confusion.
+
+**The Solution**: Git worktrees let you have multiple branches checked out *simultaneously* in separate directories. It's like having parallel universes of your codebase, except you don't need a PhD in quantum mechanics to manage them.
+
+### Why They're Brilliant
+
+- **No more stashing** - Leave your feature branch exactly as it is
+- **Instant context switching** - Just `cd` to another worktree
+- **Shared `.git` directory** - One repo, multiple checkouts, minimal disk space
+- **Run tests in parallel** - Build your feature while running tests on `main`
+- **Review PRs properly** - Check out the PR branch without disrupting your flow
+
+### Why This Tool Exists
+
+Because the native git commands look like this:
+
+```bash
+git worktree add ../my-repo-feature-branch feature-branch
+git worktree list
+git worktree remove ../my-repo-feature-branch
+```
+
+And remembering the exact path you used three days ago when you created that worktree? Absolutely not happening.
+
+`wt` keeps everything organised in a `.worktrees` directory and handles the faff so you don't have to.
+
 ## Requirements
 
 - macOS 13+
