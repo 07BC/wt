@@ -38,30 +38,35 @@ And remembering the exact path you used three days ago when you created that wor
 
 ## Requirements
 
-- macOS 13+
-- Swift 6.0+
+- macOS 13+ (Intel or Apple Silicon)
 - Git
 
 ## Installation
 
+### Download Pre-built Binary (Recommended)
+
+```bash
+# Download the latest release
+curl -L https://github.com/07BC/wt/releases/latest/download/wt -o /usr/local/bin/wt
+
+# Make it executable
+chmod +x /usr/local/bin/wt
+```
+
 ### From Source
+
+Requires Swift 6.0+
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/wt.git
+git clone https://github.com/07BC/wt.git
 cd wt
 
 # Build and install
-./install.sh
-```
-
-Or using make:
-
-```bash
 make install
 ```
 
-### Manual Build
+Or manually:
 
 ```bash
 swift build -c release
