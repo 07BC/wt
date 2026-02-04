@@ -21,19 +21,19 @@ struct WT: ParsableCommand {
         ]
     )
 
-    @Flag(name: .short, help: "Create a new worktree with a new branch based on main (e.g. wt -c my-feature)")
+    @Flag(name: .short, help: "Create worktree with new branch from main (wt -c [name])")
     var create = false
 
-    @Flag(name: .short, help: "Create a new worktree from a specified branch (e.g. wt -b feature-login)")
+    @Flag(name: .short, help: "Create worktree from existing branch (wt -b <branch>)")
     var branch = false
 
-    @Flag(name: .short, help: "Delete a worktree (e.g. wt -d my-feature)")
+    @Flag(name: .short, help: "Delete a worktree (wt -d <name>)")
     var delete = false
 
-    @Flag(name: .short, help: "List all worktrees (e.g. wt -l)")
+    @Flag(name: .short, help: "List all worktrees (wt -l)")
     var list = false
 
-    @Argument(help: "Name for the worktree or branch (e.g. my-feature)")
+    @Argument(help: "Worktree name or branch name")
     var name: String?
 
     func run() throws {

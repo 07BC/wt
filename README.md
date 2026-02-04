@@ -101,11 +101,21 @@ wt create --help
 
 ### Shorthand Flags
 
+For quick access, use the shorthand flags with an optional name argument:
+
 ```bash
-wt -l                        # List all worktrees
-wt -c my-feature             # Create worktree with new branch
-wt -b feature-login          # Create worktree from existing branch
-wt -d my-feature             # Delete worktree
+# List all worktrees
+wt -l                        # Same as: wt list
+
+# Create a worktree with a new branch from main
+wt -c                        # Same as: wt create (auto-generates name)
+wt -c my-feature             # Same as: wt create my-feature
+
+# Create a worktree from an existing branch
+wt -b feature-login          # Same as: wt branch feature-login
+
+# Delete a worktree
+wt -d my-feature             # Same as: wt delete my-feature
 ```
 
 ## Configuration
