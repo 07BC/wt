@@ -23,7 +23,7 @@ struct CreateCommand: ParsableCommand {
         let configService = ConfigService()
 
         let validation = try validationService.validateEnvironment()
-        let config = try configService.loadConfig(from: validation.repositoryRoot)
+        let config = try configService.loadConfig()
 
         let worktreeName = name ?? generateWorktreeName()
         let worktreePath = buildWorktreePath(
@@ -49,8 +49,8 @@ struct CreateCommand: ParsableCommand {
             baseBranch: config.mainBranch
         )
 
-        if !configService.configExists(in: validation.repositoryRoot) {
-            try configService.saveConfig(config, to: validation.repositoryRoot)
+        if !configService.configExists() {
+            try configService.saveConfig(config)
         }
 
         print("Worktree created at: \(worktreePath)")

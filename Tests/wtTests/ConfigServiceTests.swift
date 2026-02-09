@@ -16,19 +16,19 @@ struct ConfigServiceTests {
     private let testDirectory: String
 
     init() throws {
-        sut = ConfigService()
         testDirectory = NSTemporaryDirectory() + "wt-test-\(UUID().uuidString)"
         try FileManager.default.createDirectory(
             atPath: testDirectory,
             withIntermediateDirectories: true
         )
+        sut = ConfigService(baseDirectory: testDirectory)
     }
 
     // MARK: - loadConfig
 
     @Test("Returns default config when config file does not exist")
     func loadConfig_whenNoConfigFile_returnsDefault() throws {
-        let result = try sut.loadConfig(from: testDirectory)
+        let result = try sut.loadConfig()
 
         #expect(result.worktreeDirectory == ".worktrees")
         #expect(result.mainBranch == "main")
@@ -41,9 +41,9 @@ struct ConfigServiceTests {
             mainBranch: "develop",
             createdAt: Date()
         )
-        try sut.saveConfig(config, to: testDirectory)
+        try sut.saveConfig(config)
 
-        let result = try sut.loadConfig(from: testDirectory)
+        let result = try sut.loadConfig()
 
         #expect(result.worktreeDirectory == ".custom-worktrees")
         #expect(result.mainBranch == "develop")
@@ -59,7 +59,7 @@ struct ConfigServiceTests {
             createdAt: Date()
         )
 
-        try sut.saveConfig(config, to: testDirectory)
+        try sut.saveConfig(config)
 
         let configPath = (testDirectory as NSString)
             .appendingPathComponent(".wt")
@@ -71,7 +71,7 @@ struct ConfigServiceTests {
     func saveConfig_createsDirectory() throws {
         let config = Config.defaultConfig
 
-        try sut.saveConfig(config, to: testDirectory)
+        try sut.saveConfig(config)
 
         let wtDirectory = (testDirectory as NSString).appendingPathComponent(".wt")
         var isDirectory: ObjCBool = false
@@ -84,16 +84,16 @@ struct ConfigServiceTests {
 
     @Test("Returns false when config does not exist")
     func configExists_whenNoConfig_returnsFalse() {
-        let result = sut.configExists(in: testDirectory)
+        let result = sut.configExists()
 
         #expect(result == false)
     }
 
     @Test("Returns true when config exists")
     func configExists_whenConfigExists_returnsTrue() throws {
-        try sut.saveConfig(Config.defaultConfig, to: testDirectory)
+        try sut.saveConfig(Config.defaultConfig)
 
-        let result = sut.configExists(in: testDirectory)
+        let result = sut.configExists()
 
         #expect(result == true)
     }

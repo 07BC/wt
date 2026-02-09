@@ -8,16 +8,20 @@
 import Foundation
 
 protocol ConfigServiceProtocol: Sendable {
-    func loadConfig(from repositoryRoot: String) throws -> Config
-    func saveConfig(_ config: Config, to repositoryRoot: String) throws
-    func configExists(in repositoryRoot: String) -> Bool
+    func loadConfig() throws -> Config
+    func saveConfig(_ config: Config) throws
+    func configExists() -> Bool
 }
 
 struct ConfigService: ConfigServiceProtocol {
-    init() {}
+    private let baseDirectory: String
 
-    func loadConfig(from repositoryRoot: String) throws -> Config {
-        let configPath = configFilePath(for: repositoryRoot)
+    init(baseDirectory: String = NSHomeDirectory()) {
+        self.baseDirectory = baseDirectory
+    }
+
+    func loadConfig() throws -> Config {
+        let configPath = configFilePath()
 
         guard FileManager.default.fileExists(atPath: configPath) else {
             return Config.defaultConfig
@@ -29,9 +33,9 @@ struct ConfigService: ConfigServiceProtocol {
         return try decoder.decode(Config.self, from: data)
     }
 
-    func saveConfig(_ config: Config, to repositoryRoot: String) throws {
-        let configDirectory = configDirectoryPath(for: repositoryRoot)
-        let configPath = configFilePath(for: repositoryRoot)
+    func saveConfig(_ config: Config) throws {
+        let configDirectory = configDirectoryPath()
+        let configPath = configFilePath()
 
         if !FileManager.default.fileExists(atPath: configDirectory) {
             try FileManager.default.createDirectory(
@@ -48,16 +52,16 @@ struct ConfigService: ConfigServiceProtocol {
         try data.write(to: URL(fileURLWithPath: configPath))
     }
 
-    func configExists(in repositoryRoot: String) -> Bool {
-        FileManager.default.fileExists(atPath: configFilePath(for: repositoryRoot))
+    func configExists() -> Bool {
+        FileManager.default.fileExists(atPath: configFilePath())
     }
 
-    private func configDirectoryPath(for repositoryRoot: String) -> String {
-        (repositoryRoot as NSString).appendingPathComponent(".wt")
+    private func configDirectoryPath() -> String {
+        (baseDirectory as NSString).appendingPathComponent(".wt")
     }
 
-    private func configFilePath(for repositoryRoot: String) -> String {
-        (configDirectoryPath(for: repositoryRoot) as NSString).appendingPathComponent("config.json")
+    private func configFilePath() -> String {
+        (configDirectoryPath() as NSString).appendingPathComponent("config.json")
     }
 }
 

@@ -26,7 +26,7 @@ struct BranchCommand: ParsableCommand {
         let configService = ConfigService()
 
         let validation = try validationService.validateEnvironment()
-        let config = try configService.loadConfig(from: validation.repositoryRoot)
+        let config = try configService.loadConfig()
 
         guard try gitService.branchExists(branchName) else {
             throw GitError.branchNotFound(branchName)
@@ -52,8 +52,8 @@ struct BranchCommand: ParsableCommand {
         print("Creating worktree '\(worktreeName)' from branch '\(branchName)'...")
         try gitService.addWorktree(path: worktreePath, branch: branchName)
 
-        if !configService.configExists(in: validation.repositoryRoot) {
-            try configService.saveConfig(config, to: validation.repositoryRoot)
+        if !configService.configExists() {
+            try configService.saveConfig(config)
         }
 
         print("Worktree created at: \(worktreePath)")

@@ -26,7 +26,7 @@ struct DeleteCommand: ParsableCommand {
         let configService = ConfigService()
 
         let validation = try validationService.validateEnvironment()
-        let config = try configService.loadConfig(from: validation.repositoryRoot)
+        let config = try configService.loadConfig()
 
         let worktreePath = buildWorktreePath(
             repositoryRoot: validation.repositoryRoot,
